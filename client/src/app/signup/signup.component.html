@@ -1,0 +1,49 @@
+<h2>Sign Up</h2>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="username">Enter username</label>
+    <input type="text" id="username" formControlName="username">
+  </div>
+  <div *ngIf="username as name"> <!-- This is here to check if username is null or empty -->
+    <div *ngIf="name.invalid" class="alert">
+      <div *ngIf="name.errors?.['required']"> 
+        Enter a username
+      </div>
+      <div *ngIf="name.errors?.['minlength']"> 
+        Make the username longer pls thx
+      </div>
+      <div *ngIf="name.errors?.['asyncValidatorError']"> 
+        Username already exists
+      </div>
+    </div>
+    <div *ngIf="name.pending">
+      Checking if the username {{name.value}} already exists in the database, brb
+    </div>
+  </div>
+  <div>
+    <label for="password">Choose password</label>
+    <input type="password" id="password" formControlName="password">
+  </div>
+  <div *ngIf="password?.errors?.['required']"> 
+    Enter a password
+  </div>
+  <div *ngIf="password?.errors?.['pattern']">
+    password rules: <br>
+    - at least 6 chars long <br>
+    - has one number <br>
+    - one capital letter <br>
+    - one special character [!@#$%^&*?]
+  </div>
+  <div>
+    <label for="confirmPassword">Confirm password</label>
+    <input type="password" id="confirmPassword" formControlName="confirmPassword">
+  </div>
+  <div *ngIf="confirmPassword?.errors?.['required']"> 
+    Enter your password again
+  </div>
+  <div *ngIf="form.errors?.['passwordDoesNotMatch']">
+    > password === confirmPassword <br>
+    false
+  </div>
+  <button type="submit" [disabled]="form.invalid">OK</button>
+</form>
