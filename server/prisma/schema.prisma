@@ -9,3 +9,41 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id           Int         @id @default(autoincrement())
+  username     String      @unique
+  groups       Group[]     @relation("GroupToMember")
+  whitecards   WhiteCard[]
+  blackcards   BlackCard[]
+  passwordHash String
+}
+
+model Group {
+  id        Int         @id @default(autoincrement())
+  name      String
+  members   User[]      @relation("GroupToMember")
+  blackDeck BlackCard[] @relation("BlackCardToGroup")
+  whiteDeck WhiteCard[] @relation("WhiteCardToGroup")
+}
+
+model WhiteCard {
+  id        Int      @id @default(autoincrement())
+  text      String
+  creator   User     @relation(fields: [creatorId], references: [id])
+  creatorId Int
+  createdAt DateTime @default(now())
+  group     Group    @relation("WhiteCardToGroup", fields: [groupId], references: [id])
+  groupId   Int
+}
+
+model BlackCard {
+  id        Int      @id @default(autoincrement())
+  prompt    String
+  blanks    Int      @default(1)
+  creator   User     @relation(fields: [creatorId], references: [id])
+  creatorId Int
+  createdAt DateTime @default(now())
+  group     Group    @relation("BlackCardToGroup", fields: [groupId], references: [id])
+  groupId   Int
+}
