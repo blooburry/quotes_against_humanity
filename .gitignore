@@ -42,6 +42,7 @@ server/dist
 # Keep environment variables out of version control
 client/env.ts
 server/.env
+server/.env.ts
 
 # System files
 .DS_Store

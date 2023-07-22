@@ -53,6 +53,10 @@ export class SignupComponent implements OnInit{
     const password = this.form.get('password')?.value;
 
     // TODO: Perform signup API call or further validation logic here
+    this.userService.signUp({
+      username,
+      password, // this isn't actually hashed yet, the server does that
+    });
   }
 
   passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {

@@ -11,12 +11,15 @@ datasource db {
 }
 
 model User {
-  id           Int         @id @default(autoincrement())
-  username     String      @unique
-  groups       Group[]     @relation("GroupToMember")
-  whitecards   WhiteCard[]
-  blackcards   BlackCard[]
-  passwordHash String
+  id         Int         @id @default(autoincrement())
+  username   String      @unique
+  groups     Group[]     @relation("GroupToMember")
+  whitecards WhiteCard[]
+  blackcards BlackCard[]
+
+  // authentication
+  passwordHash     String
+  refreshTokenHash String?
 }
 
 model Group {
