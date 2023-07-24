@@ -1,31 +1,49 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDTO } from './dto';
-import { Tokens } from './types';
+import { JwtPayload, JwtPayloadWithRT, Tokens } from './types';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
+import { AccessTokenGuard, RefreshTokenGuard } from 'src/common/guards';
+import { GetCurrentUser, GetCurrentUserWithRT } from 'src/common/decorators';
 
 @Controller('auth')
 export class AuthController {
     constructor(
         private authService: AuthService,
-    ){}
+    ) { }
 
-    @Post('/local/signup')
+    @Post('local/signup')
+    @HttpCode(HttpStatus.CREATED)
     signupLocal(@Body() dto: AuthDTO): Promise<Tokens> {
+        console.log(`[AUTH/CONTROLLER]: local signup request with body: ${JSON.stringify(dto)}`);
         return this.authService.signupLocal(dto);
     }
 
-    @Post('/local/signin')
-    signinLocal() {
-        this.authService.signinLocal();
+    @Post('local/signin')
+    @HttpCode(HttpStatus.OK)
+    signinLocal(@Body() dto: AuthDTO): Promise<Tokens> {
+        console.log(`[AUTH/CONTROLLER]: local signin request with body: ${JSON.stringify(dto)}`);
+        return this.authService.signinLocal(dto);
     }
 
-    @Post('/logout')
-    logout() {
-        this.authService.logout();
+    @Post('logout')
+    @UseGuards(AccessTokenGuard)
+    @HttpCode(HttpStatus.OK)
+    logout(@GetCurrentUser() user: JwtPayload) {
+
+        console.log(`[AUTH/CONTROLLER]: Received logout request from user ${JSON.stringify(user)}.`);
+
+        return this.authService.logout(+user.sub);
     }
 
-    @Post('/refresh')
-    refreshTokens() {
-        this.authService.refreshTokens();
+    @Post('refresh')
+    @UseGuards(RefreshTokenGuard)
+    @HttpCode(HttpStatus.OK)
+    refreshTokens(@GetCurrentUserWithRT() user: JwtPayloadWithRT) {
+
+        console.log(`[AUTH/CONTROLLER]: Received refresh request from ${JSON.stringify(user)}.`);
+
+        return this.authService.refreshTokens(+user.sub, user.refreshToken);
     }
 }
