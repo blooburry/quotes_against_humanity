@@ -13,11 +13,17 @@ import { UserService } from './user.service';
 // front end stuff
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ApiService } from './api.service';
+import { HeaderComponent } from './header/header.component';
+import { JoinGameComponent } from './join-game/join-game.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignupComponent,
+    HeaderComponent,
+    JoinGameComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+body, html {
+    margin: 0;
+    height: 100%;
+}
+
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 18px;
+}
+
+
+input[type="text"] {
+    border-color: white;
+    border-bottom: 2px solid black;
+    border-style: solid;
+
+    font-style: italic;
+    font-size: 1em;
+
+    padding: 5px;
+    margin: 5px;
+
+    text-align: center;
+}
+
+.submit {
+    font-size: large;
+    border-radius: 10px;
+    border-color: white;
+    background-color: black;
+
+    color: white;
+
+    padding: 5px;
+}

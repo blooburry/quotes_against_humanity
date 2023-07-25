@@ -1,0 +1,22 @@
+.join-game-window {
+    border: 2px solid black;
+    border-radius: 10px;
+
+    padding: 20px;
+    min-width: 200px;
+
+    min-height: 400px;
+
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .title{
+        padding: 10px;
+        margin: 10px;
+
+        font-weight: bold;
+    }
+}

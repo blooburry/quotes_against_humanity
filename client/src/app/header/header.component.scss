@@ -1,0 +1,33 @@
+:host {
+    padding: 40px;
+
+    display: flex;
+    align-content: center;
+    justify-content: center;
+
+    text-align: center;
+    font-size: 2.2em;
+    font-weight: bold;
+
+    color: white;
+    background-color: black;
+}
+
+.discord-style{
+    font-family: Helvetica;
+    font-size: 1em;
+    background-color: rgb(65, 65, 65);
+
+    color: rgb(235, 235, 235);
+
+    font-weight: bold;
+
+    .blurple{
+        font-size: 1em;
+        color: #5865F2;
+    }
+
+    border-radius: 10px;
+
+    padding: 5px;
+}
