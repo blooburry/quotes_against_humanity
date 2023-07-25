@@ -2,7 +2,13 @@
     <app-header></app-header>
 </div>
 
-<app-navbar></app-navbar>
+<app-navbar [routes]="[
+    {title: 'Home', url: '/home'},
+    {title: 'Sign In', url: '/signin'},
+    {title: 'Sign Up', url: '/signup'}
+]"
+currentRouteUrl="/home"
+></app-navbar>
 
 <div class="wrapper">
     <app-join-game></app-join-game>

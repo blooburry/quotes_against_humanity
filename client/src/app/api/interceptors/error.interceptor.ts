@@ -6,7 +6,7 @@ import { HttpRequest, HttpHandler, HttpEvent } from "@angular/common/http";
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        return next.handle(req) // literally just going back to using ExpressJS
+        return next.handle(req) // literally just going back to using ExpressJS lmfao
         .pipe(
             catchError(this.handleError)
         );
@@ -14,7 +14,12 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     private handleError(error: HttpErrorResponse) {
         if (error.status === 0) {
-          const connectionRefusedMessage = 'A connection with the backend could not be made, which probably means Madeline forgot to start it up. Feel free to contact her and beat her up about it (respectfully)';
+
+          const connectionRefusedMessage = 
+'A connection with the backend could not be made, \
+which probably means Madeline forgot to start it up. \
+Feel free to contact her and beat her up about it (respectfully)';
+
           console.error(connectionRefusedMessage, error.error);
           alert(connectionRefusedMessage);
         } else {

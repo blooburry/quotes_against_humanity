@@ -1,59 +1,72 @@
 <app-header></app-header>
-<app-navbar></app-navbar>
+<app-navbar [routes]="[
+{title: 'Home', url: '/home'},
+{title: 'Sign In', url: '/signin'},
+{title: 'Sign Up', url: '/signup'},
+]"
+currentRouteUrl="/signup"
+></app-navbar>
 
-<h2>Sign Up</h2>
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="username">Enter username</label>
-    <input type="text" id="username" formControlName="username">
-  </div>
-  <div *ngIf="username as name"> <!-- This is here to check if username is null or empty -->
-    <div *ngIf="name.invalid" class="error-alert">
-      <div *ngIf="name.errors?.['required']"> 
-        Do it pls
+<div class="form-wrapper">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h2>Sign Up</h2>
+    <br>
+    <div>
+      <label for="username">Enter username</label>
+      <input type="text" id="username" formControlName="username">
+    </div>
+    <div *ngIf="username as name"> <!-- This is here to check if username is null or empty -->
+      <div *ngIf="name.invalid">
+        <div *ngIf="name.errors?.['required']" class="error-alert"> 
+          Do it pls
+        </div>
+        <div *ngIf="name.errors?.['minlength']" class="error-alert"> 
+          Make the username longer plsthx
+        </div>
+        <div *ngIf="name.errors?.['usernameTaken']" class="error-alert"> 
+          Username already exists
+        </div>
       </div>
-      <div *ngIf="name.errors?.['minlength']"> 
-        Make the username longer plsthx
-      </div>
-      <div *ngIf="name.errors?.['usernameTaken']"> 
-        Username already exists
+      <div *ngIf="name.pending">
+        Checking if the username {{name.value}} already exists in the database, brb
       </div>
     </div>
-    <div *ngIf="name.pending">
-      Checking if the username {{name.value}} already exists in the database, brb
+  
+    <div>
+      <label for="password">Choose password</label>
+      <input type="password" id="password" formControlName="password">
     </div>
-  </div>
-
-  <div>
-    <label for="password">Choose password</label>
-    <input type="password" id="password" formControlName="password">
-  </div>
-
-  <div *ngIf="password?.invalid" class="error-alert"> 
-    <div *ngIf="password?.errors?.['required']"> 
-      Do this too pls
+  
+    <div *ngIf="password?.invalid"> 
+      <div *ngIf="password?.errors?.['required']" class="error-alert"> 
+        Do this too pls
+      </div>
+      <div *ngIf="password?.errors?.['pattern']" class="error-alert">
+        password rules: <br>
+        - at least 6 chars long <br>
+        - has one number <br>
+        - one capital letter <br>
+        - one special character [!@#$%^&*?]
+      </div>
     </div>
-    <div *ngIf="password?.errors?.['pattern']">
-      password rules: <br>
-      - at least 6 chars long <br>
-      - has one number <br>
-      - one capital letter <br>
-      - one special character [!@#$%^&*?]
+  
+    <div>
+      <label for="confirmPassword">Confirm password</label>
+      <input type="password" id="confirmPassword" formControlName="confirmPassword">
     </div>
-  </div>
+    <div *ngIf="confirmPassword?.invalid || form.errors?.['passwordDoesNotMatch']">
+      <div *ngIf="confirmPassword?.errors?.['required']" class="error-alert">  
+        Enter your password again
+      </div>
+    
+      <div *ngIf="form.errors?.['passwordDoesNotMatch']" class="error-alert">
+        > password === confirmPassword <br>
+        false
+      </div>
+    </div>
 
-  <div>
-    <label for="confirmPassword">Confirm password</label>
-    <input type="password" id="confirmPassword" formControlName="confirmPassword">
-  </div>
-  <div *ngIf="confirmPassword?.errors?.['required']"> 
-    Enter your password again
-  </div>
-
-  <div *ngIf="form.errors?.['passwordDoesNotMatch']" class="error-alert">
-    > password === confirmPassword <br>
-    false
-  </div>
-
-  <button type="submit" [disabled]="form.invalid">OK</button>
-</form>
+    <br>
+  
+    <button type="submit" [disabled]="form.invalid" class="submit">OK</button>
+  </form>
+</div>

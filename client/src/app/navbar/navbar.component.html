@@ -1,2 +1,3 @@
-<a class="nav-button"> Sign In </a>
-<a [routerLink]="['/signup']" class="nav-button"> Sign Up </a>
+<ng-container *ngFor="let route of routes">
+    <a [routerLink]="[route.url]" class="nav-button" [ngClass]="{'selected disabled': route.url === currentRouteUrl}"> {{route.title}} </a>
+</ng-container>

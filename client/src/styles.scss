@@ -32,5 +32,17 @@ input[type="text"], input[type="password"] {
 
     color: white;
 
-    padding: 5px;
+    padding: 5px 40px 5px 40px;
+}
+
+h2 {
+    font-size: 1.5em;
+    font-weight: normal;
+    text-align: center;
+
+    width: 50%;
+    margin: 0px;
+    padding: 10px;
+
+    border-bottom: 2px solid black;
 }

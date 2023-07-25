@@ -16,11 +16,9 @@ app-navbar {
 }
 
 .wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-items: center;
-    justify-content: center;
-
     height: 70%;
+
+    app-join-game {
+        width: 100%;
+    }
 }
