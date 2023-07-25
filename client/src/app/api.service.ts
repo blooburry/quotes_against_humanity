@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 
-import { SERVER_URL } from 'env'
+import { SERVER_URL } from '@client/env';
 
 @Injectable({
   providedIn: 'root'

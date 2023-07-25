@@ -70,8 +70,14 @@ export class SignupComponent implements OnInit{
     this.userService.signUp({
       username,
       password, // this isn't actually hashed yet, the server does that
-    }).subscribe((u) => {
-      console.log(`User ${JSON.stringify(u)} was successfully signed up`)
+    }).subscribe((tokens) => {
+      console.log(`User ${username} was successfully signed up`);
+
+      localStorage.setItem('session', JSON.stringify({
+        username,
+        accessToken: tokens.access_token,
+        refreshToken: tokens.refresh_token,
+      }));
     });
   }
 

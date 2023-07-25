@@ -1,9 +1,10 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDTO } from './dto';
-import { JwtPayload, JwtPayloadWithRT, Tokens } from './types';
-import { AccessTokenGuard, RefreshTokenGuard } from 'src/common/guards';
-import { GetCurrentUser, GetCurrentUserWithRT } from 'src/common/decorators';
+import { JwtPayload, JwtPayloadWithRT } from './types';
+import { Tokens } from '@shared/types';
+import { AccessTokenGuard, RefreshTokenGuard } from '@server/common/guards'
+import { GetCurrentUser, GetCurrentUserWithRT } from '@server/common/decorators';
 
 @Controller('auth')
 export class AuthController {

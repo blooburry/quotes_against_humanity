@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '@server/user/user.service';
 import { User } from '@prisma/client';
 
 @Controller('users')

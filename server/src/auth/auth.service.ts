@@ -1,9 +1,9 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '@server/prisma/prisma.service';
 import { AuthDTO } from './dto';
 import * as bcrypt from 'bcrypt';
 import * as argon2 from 'argon2';
-import { Tokens } from './types';
+import { Tokens } from '@shared/types';
 import { JwtService } from '@nestjs/jwt';
 import { FIFTEEN_MINUTES, ONE_WEEK } from './constants';
 import { ConfigService } from '@nestjs/config';
