@@ -1,3 +1,6 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+
 <h2>Sign Up</h2>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div>
@@ -7,10 +10,10 @@
   <div *ngIf="username as name"> <!-- This is here to check if username is null or empty -->
     <div *ngIf="name.invalid" class="error-alert">
       <div *ngIf="name.errors?.['required']"> 
-        Enter a username
+        Do it pls
       </div>
       <div *ngIf="name.errors?.['minlength']"> 
-        Make the username longer pls thx
+        Make the username longer plsthx
       </div>
       <div *ngIf="name.errors?.['usernameTaken']"> 
         Username already exists
@@ -28,7 +31,7 @@
 
   <div *ngIf="password?.invalid" class="error-alert"> 
     <div *ngIf="password?.errors?.['required']"> 
-      Enter a password
+      Do this too pls
     </div>
     <div *ngIf="password?.errors?.['pattern']">
       password rules: <br>

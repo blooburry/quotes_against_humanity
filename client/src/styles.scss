@@ -10,7 +10,7 @@ body, html {
 }
 
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
     border-color: white;
     border-bottom: 2px solid black;
     border-style: solid;

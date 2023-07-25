@@ -1,0 +1,26 @@
+:host {
+    display: block;
+    height: 100%;
+}
+
+.header-wrapper {
+    height: 20%;
+
+    app-header {
+        min-height: 100%;
+    }
+}
+
+app-navbar {
+    height: 10%;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+
+    height: 70%;
+}

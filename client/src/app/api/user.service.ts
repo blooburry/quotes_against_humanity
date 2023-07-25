@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Tokens } from '@shared/types';
 
-import { User } from './user';
+import { User } from '../user';
+import { catchError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,6 @@ export class UserService extends ApiService{
     return this.http.get<{ exists: boolean }>(`${this.url}/users/check-username`, 
     {
       params: {username},
-    })
+    });
   }
 }

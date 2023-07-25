@@ -1,7 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
 import { SERVER_URL } from '@client/env';
+
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,5 +15,4 @@ export class ApiService {
   constructor(
     protected http: HttpClient,
   ) { }
-
 }

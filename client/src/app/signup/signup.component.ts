@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Validators, ValidatorFn, AsyncValidator, ValidationErrors, AbstractControl } from '@angular/forms';
-import { UserService } from '../user.service';
-import { Observable, map, of, debounceTime, take, switchMap, tap, interval } from 'rxjs';
+import { UserService } from '../api/user.service';
+import { Observable, map, of, debounceTime, take, switchMap, tap, interval, catchError, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Component({
@@ -12,7 +12,6 @@ import { Injectable } from '@angular/core';
 })
 export class SignupComponent implements OnInit{
   form!: FormGroup;
-  invalidSubmitAttempt = false;
 
   constructor(
     private builder: FormBuilder,
@@ -45,24 +44,22 @@ export class SignupComponent implements OnInit{
     // this.inspect();
   }
 
-  inspect(){
-    interval(5000).subscribe(() => {
-      Object.keys(this.form.controls).forEach(key => {
-        const controlErrors: ValidationErrors | null = this.form.get(key)!.errors;
-        if (controlErrors != null) {
-          Object.keys(controlErrors).forEach(keyError => {
-           console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
-          });
-        }
-      });
-    })
-  }
+  // inspect(){
+  //   interval(5000).subscribe(() => {
+  //     Object.keys(this.form.controls).forEach(key => {
+  //       const controlErrors: ValidationErrors | null = this.form.get(key)!.errors;
+  //       if (controlErrors != null) {
+  //         Object.keys(controlErrors).forEach(keyError => {
+  //          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+  //         });
+  //       }
+  //     });
+  //   })
+  // }
 
   onSubmit() {
-    // we can assume the form is valid at this point
-    
-
-    // Form is valid, proceed with signup process
+    // we can assume the form is valid at this point,
+    // so we proceed with the signup process
     const username = this.form.get('username')?.value;
     const password = this.form.get('password')?.value;
 
@@ -70,7 +67,8 @@ export class SignupComponent implements OnInit{
     this.userService.signUp({
       username,
       password, // this isn't actually hashed yet, the server does that
-    }).subscribe((tokens) => {
+    })
+    .subscribe((tokens) => {
       console.log(`User ${username} was successfully signed up`);
 
       localStorage.setItem('session', JSON.stringify({
