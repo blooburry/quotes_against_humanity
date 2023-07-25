@@ -14,7 +14,8 @@ export class UserService extends ApiService{
   }
 
   public signUp(user: User) {
-    return this.http.post<User>(`${this.url}/signup`, user);
+    console.log(`[CLIENT/USERSERVICE] sent signup request for User ${user} to server`);
+    return this.http.post<User>(`${this.url}/auth/local/signup`, user);
   }
 
   public getUserById(id: number) {

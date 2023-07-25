@@ -1,9 +1,7 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDTO } from './dto';
 import { JwtPayload, JwtPayloadWithRT, Tokens } from './types';
-import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
 import { AccessTokenGuard, RefreshTokenGuard } from 'src/common/guards';
 import { GetCurrentUser, GetCurrentUserWithRT } from 'src/common/decorators';
 

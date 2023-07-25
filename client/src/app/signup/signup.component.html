@@ -5,14 +5,14 @@
     <input type="text" id="username" formControlName="username">
   </div>
   <div *ngIf="username as name"> <!-- This is here to check if username is null or empty -->
-    <div *ngIf="name.invalid" class="alert">
+    <div *ngIf="name.invalid" class="error-alert">
       <div *ngIf="name.errors?.['required']"> 
         Enter a username
       </div>
       <div *ngIf="name.errors?.['minlength']"> 
         Make the username longer pls thx
       </div>
-      <div *ngIf="name.errors?.['asyncValidatorError']"> 
+      <div *ngIf="name.errors?.['usernameTaken']"> 
         Username already exists
       </div>
     </div>
@@ -20,20 +20,25 @@
       Checking if the username {{name.value}} already exists in the database, brb
     </div>
   </div>
+
   <div>
     <label for="password">Choose password</label>
     <input type="password" id="password" formControlName="password">
   </div>
-  <div *ngIf="password?.errors?.['required']"> 
-    Enter a password
+
+  <div *ngIf="password?.invalid" class="error-alert"> 
+    <div *ngIf="password?.errors?.['required']"> 
+      Enter a password
+    </div>
+    <div *ngIf="password?.errors?.['pattern']">
+      password rules: <br>
+      - at least 6 chars long <br>
+      - has one number <br>
+      - one capital letter <br>
+      - one special character [!@#$%^&*?]
+    </div>
   </div>
-  <div *ngIf="password?.errors?.['pattern']">
-    password rules: <br>
-    - at least 6 chars long <br>
-    - has one number <br>
-    - one capital letter <br>
-    - one special character [!@#$%^&*?]
-  </div>
+
   <div>
     <label for="confirmPassword">Confirm password</label>
     <input type="password" id="confirmPassword" formControlName="confirmPassword">
@@ -41,9 +46,11 @@
   <div *ngIf="confirmPassword?.errors?.['required']"> 
     Enter your password again
   </div>
-  <div *ngIf="form.errors?.['passwordDoesNotMatch']">
+
+  <div *ngIf="form.errors?.['passwordDoesNotMatch']" class="error-alert">
     > password === confirmPassword <br>
     false
   </div>
+
   <button type="submit" [disabled]="form.invalid">OK</button>
 </form>

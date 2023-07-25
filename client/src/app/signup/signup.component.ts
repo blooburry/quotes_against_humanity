@@ -12,6 +12,7 @@ import { Injectable } from '@angular/core';
 })
 export class SignupComponent implements OnInit{
   form!: FormGroup;
+  invalidSubmitAttempt = false;
 
   constructor(
     private builder: FormBuilder,
@@ -32,7 +33,7 @@ export class SignupComponent implements OnInit{
       }),
       password: new FormControl('', [
         Validators.required,
-        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}'),
+        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&]).{6,}'),
       ]),
       confirmPassword: new FormControl('', [
         Validators.required,
@@ -40,22 +41,37 @@ export class SignupComponent implements OnInit{
     }, {
       validators: this.passwordMatchValidator
     });
+
+    // this.inspect();
+  }
+
+  inspect(){
+    interval(5000).subscribe(() => {
+      Object.keys(this.form.controls).forEach(key => {
+        const controlErrors: ValidationErrors | null = this.form.get(key)!.errors;
+        if (controlErrors != null) {
+          Object.keys(controlErrors).forEach(keyError => {
+           console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+          });
+        }
+      });
+    })
   }
 
   onSubmit() {
-    if (this.form.invalid) {
-      // Handle invalid form
-      return;
-    }
+    // we can assume the form is valid at this point
+    
 
     // Form is valid, proceed with signup process
     const username = this.form.get('username')?.value;
     const password = this.form.get('password')?.value;
 
-    // TODO: Perform signup API call or further validation logic here
+    // API call
     this.userService.signUp({
       username,
       password, // this isn't actually hashed yet, the server does that
+    }).subscribe((u) => {
+      console.log(`User ${JSON.stringify(u)} was successfully signed up`)
     });
   }
 
