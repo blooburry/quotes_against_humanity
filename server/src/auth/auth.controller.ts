@@ -1,10 +1,13 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UseFilters, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDTO } from './dto';
-import { JwtPayload, JwtPayloadWithRT } from './types';
+import { JwtPayload } from './types';
 import { Tokens } from '@shared/types';
 import { AccessTokenGuard, RefreshTokenGuard } from '@server/common/guards'
-import { GetCurrentUser, GetCurrentUserWithRT } from '@server/common/decorators';
+import { GetCurrentPayload } from '@server/common/decorators';
+import { GetCurrentToken } from '@server/common/decorators/get-current-token.decorator';
+import { RefreshExceptionFilter, SigninExceptionFilter, SignupExceptionFilter } from './exception-filters';
+import { LogoutExceptionFilter } from './exception-filters/logout.filter';
 
 @Controller('auth')
 export class AuthController {
@@ -14,6 +17,7 @@ export class AuthController {
 
     @Post('local/signup')
     @HttpCode(HttpStatus.CREATED)
+    @UseFilters(SignupExceptionFilter)
     signupLocal(@Body() dto: AuthDTO): Promise<Tokens> {
         console.log(`[AUTH/CONTROLLER]: local signup request with body: ${JSON.stringify(dto)}`);
         return this.authService.signupLocal(dto);
@@ -21,6 +25,7 @@ export class AuthController {
 
     @Post('local/signin')
     @HttpCode(HttpStatus.OK)
+    @UseFilters(SigninExceptionFilter)
     signinLocal(@Body() dto: AuthDTO): Promise<Tokens> {
         console.log(`[AUTH/CONTROLLER]: local signin request with body: ${JSON.stringify(dto)}`);
         return this.authService.signinLocal(dto);
@@ -28,21 +33,23 @@ export class AuthController {
 
     @Post('logout')
     @UseGuards(AccessTokenGuard)
+    @UseFilters(LogoutExceptionFilter)
     @HttpCode(HttpStatus.OK)
-    logout(@GetCurrentUser() user: JwtPayload) {
+    logout(@GetCurrentPayload() payload: JwtPayload) {
 
-        console.log(`[AUTH/CONTROLLER]: Received logout request from user ${JSON.stringify(user)}.`);
+        console.log(`[AUTH/CONTROLLER]: Received logout request from user ${payload.username}.`);
 
-        return this.authService.logout(+user.sub);
+        return this.authService.logout(+payload.sub);
     }
 
     @Post('refresh')
     @UseGuards(RefreshTokenGuard)
+    @UseFilters(RefreshExceptionFilter)
     @HttpCode(HttpStatus.OK)
-    refreshTokens(@GetCurrentUserWithRT() user: JwtPayloadWithRT) {
+    refreshTokens(@GetCurrentPayload() payload: JwtPayload, @GetCurrentToken() refreshToken: string) {
 
-        console.log(`[AUTH/CONTROLLER]: Received refresh request from ${JSON.stringify(user)}.`);
+        console.log(`[AUTH/CONTROLLER]: Received refresh request from user ${payload.username}.`);
 
-        return this.authService.refreshTokens(+user.sub, user.refreshToken);
+        return this.authService.refreshTokens(+payload.sub, refreshToken);
     }
 }

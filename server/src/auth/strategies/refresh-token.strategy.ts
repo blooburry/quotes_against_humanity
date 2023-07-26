@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import  { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { JwtPayload, JwtPayloadWithRT } from '../types';
+import { JwtPayload } from '../types';
 
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
@@ -17,13 +17,15 @@ export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refres
         });
     }
 
-    validate(req: Request, payload: JwtPayload): JwtPayloadWithRT{
+    validate(req: Request, payload: JwtPayload): {payload: JwtPayload, refreshToken: string } {
         const refreshToken = req.get('authorization')
         .replace('Bearer', '')
         .trim();
         
+        console.log('[SERVER/AUTHGUARD] Refresh token correct: access granted to request.')
+
         return {
-            ...payload,
+            payload,
             refreshToken,
         };
     }

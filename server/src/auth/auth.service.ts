@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '@server/prisma/prisma.service';
 import { AuthDTO } from './dto';
 import * as bcrypt from 'bcrypt';
@@ -29,6 +29,8 @@ export class AuthService {
         const tokens = await this.generateTokens(newUser.id, newUser.username);
 
         await this.updateRefreshTokenHash(newUser.id, tokens.refresh_token);
+
+        console.log('[SERVER/AUTHSERVICE] User successfully signed up.');
 
         return tokens;
     }
@@ -80,14 +82,16 @@ export class AuthService {
             }
         });
 
-        if(!user) throw new NotFoundException('Cannot sign in: user not found');
+        if(!user) throw new NotFoundException();
         
         const passwordMatches = await bcrypt.compare(dto.password, user.passwordHash);
 
-        if(!passwordMatches) throw new ForbiddenException('Cannot sign in: password does not match');
+        if(!passwordMatches) throw new UnauthorizedException();
 
         const tokens = await this.generateTokens(user.id, user.username);
         await this.updateRefreshTokenHash(user.id, tokens.refresh_token);
+
+        console.log('[SERVER/AUTHSERVICE] User successfully logged in.');
         return tokens;
     }
     
@@ -103,6 +107,8 @@ export class AuthService {
                 refreshTokenHash: null,
             }
         });
+
+        console.log('[SERVER/AUTHSERVICE] User successfully logged out.');
     }
 
     async refreshTokens(userId: number, refreshToken: string) {
@@ -112,16 +118,18 @@ export class AuthService {
             }
         });
 
-        if(!user) throw new NotFoundException('Cannot refresh tokens: user not found');
+        if(!user) throw new NotFoundException();
 
-        if(!user.refreshTokenHash) throw new ForbiddenException('Cannot refresh tokens: user is logged out. Please sign in to get new tokens.');
+        if(!user.refreshTokenHash) throw new ForbiddenException();
 
         const refreshTokenMatches = await argon2.verify(user.refreshTokenHash, refreshToken);
 
-        if(!refreshTokenMatches) throw new ForbiddenException('Cannot refresh tokens: refresh token does not match');
+        if(!refreshTokenMatches) throw new UnauthorizedException();
 
         const tokens = await this.generateTokens(user.id, user.username);
         await this.updateRefreshTokenHash(user.id, tokens.refresh_token);
+
+        console.log('[SERVER/AUTHSERVICE] Tokens refreshed successfully.');
         return tokens;
     }
 }
