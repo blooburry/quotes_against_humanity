@@ -1,0 +1,47 @@
+<app-header></app-header>
+<app-navbar [routes]="[
+{title: 'Home', url: '/home'},
+{title: 'Sign In', url: '/signin'},
+{title: 'Sign Up', url: '/signup'},
+]" currentRouteUrl="/signin"></app-navbar>
+
+<div class="form-wrapper">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <h2> Sign In </h2>
+        <br>
+        <div>
+            <label for="username">Enter username</label>
+            <input type="text" id="username" formControlName="username">
+        </div>
+        <div *ngIf="username?.invalid">
+            <div *ngIf="username?.errors?.['required']" class="error-alert">
+                dewit
+            </div>
+        </div>
+        <div *ngIf="userNotFound" class="error-alert">
+            the database can't find this user idk
+        </div>
+
+        <div>
+            <label for="password">Enter password</label>
+            <input type="password" id="password" formControlName="password">
+        </div>
+        <div *ngIf="password?.invalid">
+            <div *ngIf="password?.errors?.['required']" class="error-alert">
+                dewwwwwiiiiiittttt
+            </div>
+        </div>
+        <div *ngIf="passwordIncorrect" class="error-alert">
+            the database doesnt think this password is correct ¯\_(ツ)_/¯
+        </div>
+
+        <br>
+
+        <button type="submit" 
+        [disabled]="form.invalid || this.pendingSubmission" 
+        [ngClass]="{'loading': pendingSubmission}" 
+        class="submit">
+            {{this.pendingSubmission? 'gimme a sec...' : 'OK'}}
+        </button>
+    </form>
+</div>

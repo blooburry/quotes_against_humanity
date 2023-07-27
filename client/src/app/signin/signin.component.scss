@@ -1,0 +1,33 @@
+app-header {
+    height: 10%;
+}
+
+app-navbar {
+    margin: 20px 10px 20px 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    .submit:disabled {
+        background-color: grey;
+    }
+}
+
+@keyframes shimmerAnimation {
+    0% {
+      background-position: -200%;
+    }
+    100% {
+      background-position: 200%;
+    }
+  }
+  
+  .loading {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    background-size: 200% 200%;
+    animation: shimmerAnimation 2s linear infinite;
+  }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Validators, ValidatorFn, AsyncValidator, ValidationErrors, AbstractControl } from '@angular/forms';
-import { UserService } from '../api/user.service';
+import { UserService } from '../../api/user.service';
 import { Observable, map, of, debounceTime, take, switchMap, tap, interval, catchError, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 

@@ -8,16 +8,16 @@ import { SignupComponent } from './signup/signup.component';
 
 // communication with the server
 import { HttpClientModule } from '@angular/common/http';
-import { UserService } from './api/user.service';
+import { UserService } from '../api/user.service';
 
 // front end stuff
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ApiService } from './api/api.service';
 import { HeaderComponent } from './header/header.component';
 import { JoinGameComponent } from './join-game/join-game.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
-import { ApiModule } from './api/api.module';
+import { ApiModule } from '../api/api.module';
+import { SigninComponent } from './signin/signin.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +27,7 @@ import { ApiModule } from './api/api.module';
     JoinGameComponent,
     NavbarComponent,
     HomeComponent,
+    SigninComponent,
   ],
   imports: [
     BrowserModule,

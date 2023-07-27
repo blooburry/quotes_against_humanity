@@ -6,28 +6,13 @@ app-navbar {
     margin: 20px 10px 20px 10px;
 }
 
-.form-wrapper {
-    width: 40%;
-    margin: 0px auto 0px auto;
-    padding: 20px;
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 
-    border-radius: 10px;
-    border: 2px solid black;
-
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-
-        .submit:disabled {
-            background-color: grey;
-        }
+    .submit:disabled {
+        background-color: grey;
     }
-}
-
-.error-alert {
-    font-size: 0.8em;
-    font-style: italic;
-    color: red;
 }
