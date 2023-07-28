@@ -5,6 +5,8 @@ import { Validators } from '@angular/forms';
 import { catchError } from 'rxjs';
 import { PasswordIncorrectError, UserNotFoundError } from 'common/types';
 import { AuthService } from 'api/auth.service';
+import { Router } from '@angular/router';
+import { SERVER_URL } from '@client/env';
 
 @Component({
   selector: 'app-signin',
@@ -22,6 +24,7 @@ export class SigninComponent implements OnInit {
   constructor(
     private builder: FormBuilder,
     private authService: AuthService,
+    private router: Router,
   ){ }
 
   ngOnInit() {
@@ -56,6 +59,7 @@ export class SigninComponent implements OnInit {
       next: () => {
         this.pendingSubmission = false;
         console.log(`User ${username} was successfully signed in`);
+        this.router.navigateByUrl(`/${username}/home`);
       },
       error: (error: Error) => {
         this.pendingSubmission = false;

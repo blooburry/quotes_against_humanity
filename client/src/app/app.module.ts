@@ -18,6 +18,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { ApiModule } from '../api/api.module';
 import { SigninComponent } from './signin/signin.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { SigninComponent } from './signin/signin.component';
     NavbarComponent,
     HomeComponent,
     SigninComponent,
+    NotFoundComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,

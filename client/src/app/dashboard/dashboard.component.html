@@ -1,0 +1,9 @@
+<app-header></app-header>
+<app-navbar
+[routes]="[
+    {title: this.username, url: '/' + this.username + '/home'},
+    {title: 'Communities', url: '/communities'},
+    {title: 'Log Out', url: '/signin'},
+]"
+[currentRouteUrl]="'/' + this.username + '/home'"
+></app-navbar>

@@ -3,13 +3,17 @@ import { AuthDTO, Tokens } from '@shared/types';
 import { ApiService } from './api.service';
 import { HttpClient } from '@angular/common/http';
 import { pipe, tap } from 'rxjs';
+import { SessionService } from './session.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService extends ApiService {
 
-  constructor(http: HttpClient) {
+  constructor(
+    http: HttpClient,
+    private sessionService: SessionService,
+    ) {
     super(http)
   }
 
@@ -18,12 +22,7 @@ export class AuthService extends ApiService {
     return this.http.post<Tokens>(`${this.url}/auth/local/signup`, user)
       .pipe(
         tap((t: Tokens) => {
-          const session = {
-            username: user.username,
-            accessToken: t.access_token,
-            refreshToken: t.refresh_token,
-          };
-          localStorage.setItem('session', JSON.stringify(session));
+          this.sessionService.createSession(user, t)
         })
       )
   }
@@ -33,12 +32,7 @@ export class AuthService extends ApiService {
     return this.http.post<Tokens>(`${this.url}/auth/local/signin`, user)
       .pipe(
         tap((t: Tokens) => {
-          const session = {
-            username: user.username,
-            accessToken: t.access_token,
-            refreshToken: t.refresh_token,
-          };
-          localStorage.setItem('session', JSON.stringify(session));
+          this.sessionService.createSession(user, t)
         })
       );
   }
