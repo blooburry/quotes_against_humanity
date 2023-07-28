@@ -1,8 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UseFilters, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDTO } from './dto';
 import { JwtPayload } from './types';
-import { Tokens } from '@shared/types';
+import { Tokens, AuthDTO } from '@shared/types';
 import { AccessTokenGuard, RefreshTokenGuard } from '@server/common/guards'
 import { GetCurrentPayload } from '@server/common/decorators';
 import { GetCurrentToken } from '@server/common/decorators/get-current-token.decorator';

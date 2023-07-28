@@ -4,6 +4,7 @@ import { UserService } from 'api/user.service';
 import { Validators } from '@angular/forms';
 import { catchError } from 'rxjs';
 import { PasswordIncorrectError, UserNotFoundError } from 'common/types';
+import { AuthService } from 'api/auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -20,7 +21,7 @@ export class SigninComponent implements OnInit {
 
   constructor(
     private builder: FormBuilder,
-    private userService: UserService,
+    private authService: AuthService,
   ){ }
 
   ngOnInit() {
@@ -47,30 +48,25 @@ export class SigninComponent implements OnInit {
 
     this.pendingSubmission = true;
 
-    this.userService.signIn({
+    this.authService.signIn({
       username,
       password,
     })
-    .subscribe((tokens) => {
-      this.pendingSubmission = false;
-
-      console.log(`User ${username} was successfully signed in`);
-
-      localStorage.setItem('session', JSON.stringify({
-        username,
-        accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token,
-      }));
-    },
-    (error: Error) => {
-      this.pendingSubmission = false;
-
-      if(error instanceof UserNotFoundError) this.userNotFound = true;
-      else if(error instanceof PasswordIncorrectError) this.passwordIncorrect = true;
-      
-      // credentials are correct
-      if(!this.userNotFound && !this.passwordIncorrect) alert(error.message);
-    })
+    .subscribe({
+      next: () => {
+        this.pendingSubmission = false;
+        console.log(`User ${username} was successfully signed in`);
+      },
+      error: (error: Error) => {
+        this.pendingSubmission = false;
+  
+        if(error instanceof UserNotFoundError) this.userNotFound = true;
+        else if(error instanceof PasswordIncorrectError) this.passwordIncorrect = true;
+        
+        // credentials are correct
+        else if(!this.userNotFound && !this.passwordIncorrect) alert(error.message);
+      }
+    });
   }
 
   get username() {

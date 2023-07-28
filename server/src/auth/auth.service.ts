@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '@server/prisma/prisma.service';
-import { AuthDTO } from './dto';
+import { AuthDTO } from '@shared/types';
 import * as bcrypt from 'bcrypt';
 import * as argon2 from 'argon2';
 import { Tokens } from '@shared/types';

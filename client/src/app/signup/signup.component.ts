@@ -4,6 +4,7 @@ import { Validators, ValidatorFn, AsyncValidator, ValidationErrors, AbstractCont
 import { UserService } from '../../api/user.service';
 import { Observable, map, of, debounceTime, take, switchMap, tap, interval, catchError, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { AuthService } from 'api/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -16,6 +17,7 @@ export class SignupComponent implements OnInit{
   constructor(
     private builder: FormBuilder,
     private userService: UserService,
+    private authService: AuthService,
     private usernameValidator: UniqueUsernameValidator,
   ) { }
 
@@ -64,18 +66,12 @@ export class SignupComponent implements OnInit{
     const password = this.form.get('password')?.value;
 
     // API call
-    this.userService.signUp({
+    this.authService.signUp({
       username,
       password, // this isn't actually hashed yet, the server does that
     })
-    .subscribe((tokens) => {
+    .subscribe(() => {
       console.log(`User ${username} was successfully signed up`);
-
-      localStorage.setItem('session', JSON.stringify({
-        username,
-        accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token,
-      }));
     });
   }
 
